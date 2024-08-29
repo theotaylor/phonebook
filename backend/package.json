@@ -1,22 +1,25 @@
 {
-  "name": "backend",
+  "name": "phonebook-repo-backend",
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
-    "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
+    "build:ui": "rm -rf ../backend/dist && cd ../frontend && npm run build && cp -r build ../backend",    
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theotaylor/phonebook"
+  },
   "author": "Theo Taylor",
-  "license": "",
+  "license": "UNLICENSED",
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.19.2"
-  },
-  "devDependencies": {
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
     "nodemon": "^3.1.4"
   }
 }
