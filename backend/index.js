@@ -96,19 +96,12 @@ app.post('/api/persons/', (request, response) => {
         })
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-    const id = request.params.id;
-
-    // Check if the id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return response.status(400).send({ error: 'Invalid ID format' });
-    }
-
-    Person.deleteOne({_id: id})
+app.delete('/api/persons/:id', (request, response, next) => {
+    Person.findByIdAndDelete(request.params.id)
         .then(result => {
-            response.status(204).end() 
-            console.log("deleted")
+            response.status(204).end()
         })
+        .catch(error => next(error))
 }) 
 
 const unknownEndpoint = (request, response) => {
@@ -116,6 +109,16 @@ const unknownEndpoint = (request, response) => {
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.stack)
+
+    response.status(500).send({ error: 'Something went wrong' })
+
+    next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
