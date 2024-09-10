@@ -26,9 +26,9 @@ morgan.token('post-body', function (request, response) {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post-body'))
 
-app.get('/', (request, response) => {
-    response.send('Welcome to the Phonebook API')
-})
+// app.get('/', (request, response) => {
+//     response.send('Welcome to the Phonebook API')
+// })
 
 app.get('/api/persons', (request, response, next) => {
     Person.find({})
