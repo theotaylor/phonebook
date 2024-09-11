@@ -85,20 +85,23 @@ const App = () => {
   
       personsService
         .create(newPerson)
-        .then(returnedPersons => {
-          setPersons(persons.concat(returnedPersons))
+        .then(createdPerson => {
+          setPersons(persons.concat(createdPerson))
           setNewName('')
           setNewNumber('')
         })
-      setAddedPersonMessage(`Added ${newPerson.name}`)
-      setTimeout(() => {
-        setAddedPersonMessage(null)
-      }, 2000)
+        .catch(error => {
+          console.log(error.response.data.error)
+          setErrorMessage(`${error.response.data.error}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
   }
 
-  const filteredPersons = persons.filter(persons => 
-    persons.name.toLowerCase().includes(newSearch.toLowerCase())
+  const filteredPersons = persons.filter(person => 
+    person.name && person.name.toLowerCase().includes(newSearch.toLowerCase())
   )
 
   return (
@@ -181,7 +184,7 @@ const ErrorNotification = ({message}) => {
     const errorStyling = {
       border: '2px solid red',
       backgroundColor: 'rgb(203 203 203)',
-      color: 'green',
+      color: 'red',
       padding: '0 0 0 20px',
       borderRadius: '8px',
       marginBottom: '10px',
